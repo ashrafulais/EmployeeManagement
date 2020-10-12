@@ -210,3 +210,29 @@ To acces the data, we use @Model directive
 Contains compile time checking and IntelliSense
 
 
+
+
+//View models : DTO / Data Transfer Object
+//---------------------------------------
+Collection of one or more properties, Parent model
+
+//1. Inside the Controller
+var homeDetailsViewModel = new HomeDetailsViewModel()
+{
+    Employee = _repository.GetEmployee(1),
+    PageTitle = "Employee model"
+};
+
+//2. for the View
+@model EmployeeManagement.ViewModels.HomeDetailsViewModel
+<h2>Page title: @Model.PageTitle</h2>
+<p>Name: @Model.Employee.Name </p>
+
+
+
+
+
+
+
+
+
