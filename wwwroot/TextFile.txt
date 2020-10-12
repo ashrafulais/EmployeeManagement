@@ -1,0 +1,212 @@
+﻿
+//Routing system
+//---------------------------------------
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGet("/", async context =>
+    {
+        await context.Response.WriteAsync("Hello World!");
+    });
+});
+
+//Middleware request pipeline: MW! Incoming > Hello > MW1.OutGoing
+//---------------------------------------
+app.Use(async (context, next) =>
+{
+    logger.LogInformation("MW1: Incoming request");
+    await next();
+    logger.LogInformation("MW1: Outgoing response");
+});
+
+app.Run(async (context) =>
+{
+    await context.Response.WriteAsync("Hello Munuiiii");
+});
+
+
+//custom default file selection
+//---------------------------------------
+DefaultFilesOptions defaultFiles = new DefaultFilesOptions();
+defaultFiles.DefaultFileNames.Clear();
+defaultFiles.DefaultFileNames.Add("demofile.html");
+//----Serves the index.html / default.html files first
+app.UseDefaultFiles(defaultFiles); 
+//----Serve static files : UseDefaultFiles must be registered before UseStaticFiles Middleware
+app.UseStaticFiles();
+
+
+//custom default file name from file directory also
+//---------------------------------------
+FileServerOptions fileServer = new FileServerOptions();
+fileServer.DefaultFilesOptions.DefaultFileNames.Clear();
+fileServer.DefaultFilesOptions.DefaultFileNames.Add("demofile.html");
+//fileServer.DefaultFilesOptions.DefaultFileNames.Add("img/juice.jpg");
+//----Serves the index.html / default.html files first
+app.UseFileServer(fileServer);
+//UseFileServer = UseDirectoryBrowser+UseDefaultFiles+UseStaticFiles
+
+//When the error won't be thrown
+//---------------------------------------
+app.Run(async (context) =>
+{
+    //The error won't be thrown if the default file is found previously
+    throw new Exception("Error occurred");
+    await context.Response.WriteAsync("Hello Munuiiii");
+});
+
+
+
+//number of lines to show before the error line
+var devExceptionOptions = new DeveloperExceptionPageOptions()
+{    
+    SourceCodeLineCount = 10
+};
+//contains stack trace, cookies, headers, query string
+app.UseDeveloperExceptionPage(devExceptionOptions);
+
+
+//Environment variables
+//---------------------------------------
+
+1 Development : Debug, Unhandlex errors, Unminified scripts, 
+    developer exception page
+
+2 Staging: Identical to production, identity deployment related issues, 
+    B2B apps service provider EndToEnd testing, 
+    minified scripts loaded, generic error message
+
+3 Production : Configured security, custom error page
+
+ASPNETCORE_ENVIRONMENT in the properties>launchsettings.json
+ASPNETCORE_ENVIRONMENT comes from the json file or windows system variable
+    any option is okay
+
+IHostingEnvironment Type: IsDevelopment, IsStaging, IsProduction
+check custom environment name: env.IsEnvironment("CustomEnv") // UAT, QA etc
+When not specified, runtime default name is: Production
+
+custom error page redirect: IApplicationBuilder.UseExceptionHandler("/Error")
+
+
+//MVC
+//---------------------------------------
+
+Request >     Controller     DataSource
+              /        \       |
+            View   >   Model  <|
+
+Response <
+
+domain.com/controller/method/parameter
+
+//doesn't require to specify a path, default: Home/Index
+app.UseMvcWithDefaultRoute();
+If not found, runt he next middleware data like, WriteAsync() data
+
+use mvc middleware in .net 3.0 by modifying this service > services.AddMvc(options => options.EnableEndpointRouting = false);
+
+
+//Dependency injection : procides loose coupling, easy testing system
+//---------------------------------------
+//This is a tightly coupled system, we can not easily change the implementation of the interface later
+IEmployeeRepository _repository = new MockEmployeeRepository()
+
+//When there are a large number of controllers, using a single instance of interface is helpful, no need to worry about the implementation of the interface
+services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>();
+
+AddSingleton : Created at the first request and that instance is used through the whole application lifetime
+
+AddTransient : Creates instance for every request 
+AddScoped : Creates instance once per request within the scope
+
+//Send custom object as json type from the controller
+public ObjectResult Details()
+{
+    return new ObjectResult(_repository.GetEmployee(1));
+}
+
+//Send XML format data, default is json
+services.AddMvc(options => options.EnableEndpointRouting = false)
+         .AddXmlSerializerFormatters();
+//set the postman request parameter: (Accept: application/xml)
+
+
+//Customize view discovery in asp net core mvc
+//---------------------------------------
+
+//MVC look for the view in this format
+InvalidOperationException: The view 'Details' was not found. The following locations were searched:
+/Views/Home/Details.cshtml
+/Views/Shared/Details.cshtml
+/Pages/Shared/Details.cshtml
+
+
+//custom view name, not following the method name
+//--File inside the same controller directory name : Views>Home>Test
+return View("Test");
+
+//--file inside the views folder : Views>Test>File
+return View("../Test/TestFile");
+
+//--file inside the project directory : EmployeeManagement>TestViews>ViewFile
+return View("TestViews/TestViewFile.cshtml"); or 
+    return View("~/TestViews/TestViewFile.cshtml");
+
+View(object model) // file with the same action method name
+View(string viewName) //custom view name
+View(string viewName, object model) // custom view and model data
+
+
+//Pass data to view
+//---------------------------------------
+Options: ViewData, ViewBag, StronglyTypedView
+
+Indication to razor that we're switching html to c#
+
+ViewData:--------
+//1. inside the controller
+ViewData["Employee"] = model;
+ViewData["PageTitle"]= "Employee model";
+
+//2. inside a cshtml view
+<h3> @ViewData["PageTitle"] </h3>
+@{
+    var employee = ViewData["Employee"] as EmployeeManagement.Models.Employee;
+}
+<p>@employee.Name</p>
+
+It's a weakly typed, key value store, dynamically resolved at runtime
+No compiletime check, No IntelliSense, Misspelling might happen
+
+
+ViewBag:--------
+A wrapper around viewdata, DynamicProperties, No compiletime type checking,
+No IntelliSense,
+Cannot perform runtime binding on a null reference
+
+//1. inside the controller
+ViewBag.Employee = employeeModel;
+ViewBag.PageTitle = "Employee model";
+
+//2. inside a cshtml view
+<h2>Page title: @ViewBag.PageTitle</h2>
+<p>Name: @ViewBag.Employee.Name </p>
+
+
+StronglyTypedView: -------- Recommended , uses: StronglyTyped Model Object
+//1. Inside the Controller
+ViewBag.PageTitle = "Employee model";
+return View(employeeModel);
+
+//2. for the View
+@model EmployeeManagement.Models.Employee
+<h2>Page title: @ViewBag.PageTitle</h2>
+<p>Name: @Model.Name </p>
+<p>Department: @Model.Department </p>
+
+Define view using the @model directive
+To acces the data, we use @Model directive 
+Contains compile time checking and IntelliSense
+
+
