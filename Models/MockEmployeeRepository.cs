@@ -28,5 +28,10 @@ namespace EmployeeManagement.Models
         {
             return employees.FirstOrDefault(x => x.Id == Id);
         }
+
+        public IEnumerable<Employee> GetEmployees()
+        {
+            return employees.AsEnumerable();
+        }
     }
 }

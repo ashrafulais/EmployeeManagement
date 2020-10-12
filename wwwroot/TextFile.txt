@@ -210,8 +210,6 @@ To acces the data, we use @Model directive
 Contains compile time checking and IntelliSense
 
 
-
-
 //View models : DTO / Data Transfer Object
 //---------------------------------------
 Collection of one or more properties, Parent model
@@ -229,9 +227,20 @@ var homeDetailsViewModel = new HomeDetailsViewModel()
 <p>Name: @Model.Employee.Name </p>
 
 
+//List / Table view
+//---------------------------------------
 
+list model direcive: @model IEnumerable<EmployeeManagement.Models.Employee>
 
-
+looping
+@foreach(var employee in Model)
+{
+<tr>
+    <td>@employee.Id</td>
+    <td>@employee.Name</td>
+    <td>@employee.Department</td>
+</tr>
+}
 
 
 
