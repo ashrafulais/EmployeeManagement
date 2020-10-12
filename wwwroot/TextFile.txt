@@ -243,5 +243,6 @@ looping
 }
 
 
+Layout view is the Master page
 
 

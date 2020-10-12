@@ -1,12 +1,10 @@
 ﻿@model IEnumerable<EmployeeManagement.Models.Employee>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title></title>
-    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-</head>
-<body>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Index page";
+}
+
     <h2>List data</h2>
 
     <table>
@@ -19,16 +17,13 @@
         </thead>
 
         <tbody>
-            @foreach(var employee in Model)
+            @foreach (var employee in Model)
             {
-            <tr>
-                <td>@employee.Id</td>
-                <td>@employee.Name</td>
-                <td>@employee.Department</td>
-            </tr>
+                <tr>
+                    <td>@employee.Id</td>
+                    <td>@employee.Name</td>
+                    <td>@employee.Department</td>
+                </tr>
             }
         </tbody>
     </table>
-
-</body>
-</html>

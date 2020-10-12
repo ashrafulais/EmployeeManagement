@@ -1,5 +1,14 @@
 ﻿@model EmployeeManagement.ViewModels.HomeDetailsViewModel
 
-<h2>Page title: @Model.PageTitle</h2>
-<p>Name: @Model.Employee.Name </p>
-<p>Department: @Model.Employee.Department </p>
+@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Details page";
+}
+
+    <h2>Page title: @Model.PageTitle</h2>
+    <p>Name: @Model.Employee.Name </p>
+    <p>Department: @Model.Employee.Department </p>
+
+@section Scripts {
+    <script src="~/js/script.js"></script>
+}
