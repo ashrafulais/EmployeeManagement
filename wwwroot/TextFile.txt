@@ -245,4 +245,21 @@ looping
 
 Layout view is the Master page
 
+//SECTION
+Section can be optional
+Section layout view is rendered at the location where RenderSection() method is called
+
+before body tag:-------
+@if(IsSectionDefined("Scripts"))
+{
+    @RenderSection("Scripts", required: true)
+}
+
+inside the page area:-------- drag the script file to get the automatic script tag
+@section Scripts {
+    <script src="~/js/script.js"></script>
+}
+
+
+
 
