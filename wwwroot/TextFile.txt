@@ -290,3 +290,13 @@ It follows hierarchical Execution and can be used in many places.
 
 We can place the file inside any of the subfolder, keeping the main one
 
+
+//ViewImports
+//---------------------------------------
+
+_ViewImports.cshtml is placed in the Views folder
+Used to include the common namespaces using @using directives
+Other supported directived:
+@addTagHelper @removeTagHelper @tagHelperPrefix @model @inherits @inject
+It follows hierarchical Execution.
+
