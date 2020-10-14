@@ -264,15 +264,29 @@ inside the page area:-------- drag the script file to get the automatic script t
 //ViewStart
 //---------------------------------------
 
-Helps to remove Layout defition in each page, rather inside a single page
+Reduces code redundancy and improves maintainability
 @{
     Layout = "_Layout";
     //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-This file follows hierarchical Execution and can be used in many places
+
+Use multiple layout file using the name: Layout = "_Layout2";
+@{
+    if (User.IsInRole("Admin"))
+    {
+        Layout = "_AdminLayout";
+    }
+    else
+    {
+        Layout = "_Layout2";
+    }
+}
+
+ViewStart file code is executed before the view.
+It follows hierarchical Execution and can be used in many places.
+*. View > _ViewStart.html
+*. View > Home > _ViewStart.html
+
 We can place the file inside any of the subfolder, keeping the main one
-
-
-
 
