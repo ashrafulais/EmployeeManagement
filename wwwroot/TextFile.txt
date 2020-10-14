@@ -261,5 +261,18 @@ inside the page area:-------- drag the script file to get the automatic script t
 }
 
 
+//ViewStart
+//---------------------------------------
+
+Helps to remove Layout defition in each page, rather inside a single page
+@{
+    Layout = "_Layout";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+This file follows hierarchical Execution and can be used in many places
+We can place the file inside any of the subfolder, keeping the main one
+
+
 
 
