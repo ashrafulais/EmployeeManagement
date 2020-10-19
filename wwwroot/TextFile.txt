@@ -319,6 +319,21 @@ host_address/controller/action/parameter
 
 //Ading botstrap
 
-
 files can be installed using the libman.json file.
 Add the file name, it will show intellisense and save the file to pull the actual script files.
+
+//Tag helpers
+//---------------------------------------
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<a href="@Url.Action("details", "home", new { id = employee.Id })" class="btn btn-primary">View 1</a>
+
+@Html.ActionLink("View2", "details", "home", new { id = employee.Id })
+
+<a href="/home/details/@employee.Id" class="btn btn-primary">View3</a>
+
+//using asp.net core
+<a asp-controller="home" asp-action="details" asp-route-id="@employee.Id" class="btn btn-primary">View4</a>
+
+

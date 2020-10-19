@@ -17,12 +17,15 @@
                 <div class="card-body">
                     <h4 class="card-title">@employee.Name</h4>
                     <p class="card-text">@employee.Name is in the @employee.Department Department.</p>
-                    
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary">View</a>
-                        <a href="#" class="btn btn-warning">Edit</a>
-                    </div>
+
                 </div>
+
+                <div class="card-footer">
+                    <a asp-controller="home" asp-action="details" asp-route-id="@employee.Id" class="btn btn-primary">View</a>
+
+                    <a asp-controller="home" asp-action="details" asp-route-id="@employee.Id" class="btn btn-warning">Edit</a>
+                </div>
+
             </div>
         </div>
 
