@@ -41,12 +41,12 @@ namespace EmployeeManagement
 
 
             //> conventional routing
-            /*app.UseMvc(routes =>
+            app.UseMvc(routes =>
             {
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-            });*/
+            });
 
-            app.UseMvc();
+            //app.UseMvc();
 
         }
     }

@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Controllers
 {
-    //[Route("Home")]
-    [Route("[controller]/[action]")] //token
     public class HomeController : Controller
     {
         private IEmployeeRepository _repository { get; }
@@ -20,12 +18,6 @@ namespace EmployeeManagement.Controllers
         }
 
 
-        //[Route("Home")]
-        //[Route("Index")]
-        //[Route("[action]")]
-        [Route("")]
-        [Route("~/")]
-        [Route("~/Home")]
         public ViewResult Index()
         {
             var employeeList = _repository.GetEmployees();
@@ -33,10 +25,6 @@ namespace EmployeeManagement.Controllers
 
             //return _repository.GetEmployee(1).Name;
         }
-
-        //[Route("Details/{id?}")]
-        //[Route("[action]/{id?}")]
-        [Route("{id?}")]
 
         public ViewResult Details(int? id)
         {
