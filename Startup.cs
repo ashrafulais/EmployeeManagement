@@ -37,7 +37,16 @@ namespace EmployeeManagement
             //Serves the index.html / default.html files first
             app.UseStaticFiles();
 
-            app.UseMvcWithDefaultRoute();
+            //app.UseMvcWithDefaultRoute();
+
+            
+            //> conventional routing
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            });
+
+
 
         }
     }

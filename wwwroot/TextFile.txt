@@ -300,3 +300,15 @@ Other supported directived:
 @addTagHelper @removeTagHelper @tagHelperPrefix @model @inherits @inject
 It follows hierarchical Execution.
 
+
+//Routing
+//---------------------------------------
+
+>conventional routing
+host_address/controller/action/parameter
+
+>Attribute Routing
+
+
+
+

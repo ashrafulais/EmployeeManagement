@@ -24,7 +24,7 @@ namespace EmployeeManagement.Controllers
 
             //return _repository.GetEmployee(1).Name;
         }
-        public ViewResult Details()
+        public ViewResult Details(int id)
         {
             var homeDetailsViewModel = new HomeDetailsViewModel()
             {
