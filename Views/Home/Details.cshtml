@@ -5,8 +5,17 @@
 }
 
     <h2>Page title: @Model.PageTitle</h2>
-    <p>Name: @Model.Employee.Name </p>
-    <p>Department: @Model.Employee.Department </p>
+
+    <div class="col-sm-6">
+        <div class="card">
+            <img class="card-img-top" src="~/img/img_avatar1.png" alt="Card image">
+            <div class="card-body">
+                <h4 class="card-title">@Model.Employee.Name</h4>
+                <p class="card-text">@Model.Employee.Name is in the @Model.Employee.Department Department.</p>
+            </div>
+        </div>
+    </div>
+
 
 @section Scripts {
     <script src="~/js/script.js"></script>

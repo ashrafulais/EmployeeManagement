@@ -317,3 +317,8 @@ host_address/controller/action/parameter
 [Route("[controller]/[action]/[id?]")] //? for optional parameters
 
 
+//Ading botstrap
+
+
+files can be installed using the libman.json file.
+Add the file name, it will show intellisense and save the file to pull the actual script files.

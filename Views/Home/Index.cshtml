@@ -1,28 +1,30 @@
 ﻿@model IEnumerable<Employee>
 
 @{
-    ViewBag.Title = "Index page";
+    ViewBag.Title = "Employee List";
 }
 
-    <h2>Employee Info</h2>
+    <h2>Employee List</h2>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Department</th>
-            </tr>
-        </thead>
+    <div class="row">
 
-        <tbody>
-            @foreach (var employee in Model)
-            {
-                <tr>
-                    <td>@employee.Id</td>
-                    <td>@employee.Name</td>
-                    <td>@employee.Department</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        @foreach (var employee in Model)
+        {
+
+        <div class="col-sm-4">
+            <div class="card">
+                <img class="card-img-top" src="~/img/img_avatar1.png" alt="Card image">
+                <div class="card-body">
+                    <h4 class="card-title">@employee.Name</h4>
+                    <p class="card-text">@employee.Name is in the @employee.Department Department.</p>
+                    
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-primary">View</a>
+                        <a href="#" class="btn btn-warning">Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        }
+    </div>
