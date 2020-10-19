@@ -151,7 +151,8 @@ return View("../Test/TestFile");
 
 //--file inside the project directory : EmployeeManagement>TestViews>ViewFile
 return View("TestViews/TestViewFile.cshtml"); or 
-    return View("~/TestViews/TestViewFile.cshtml");
+return View("~/TestViews/TestViewFile.cshtml"); or
+return View("~/Views/Home/Index.cshtml", model);
 
 View(object model) // file with the same action method name
 View(string viewName) //custom view name
@@ -308,7 +309,11 @@ It follows hierarchical Execution.
 host_address/controller/action/parameter
 
 >Attribute Routing
+[Route("Home")]         //direct approach
+[Route("[controller]")] //token method
 
+[Route("[controller]/[action]")] //for controller
 
+[Route("[controller]/[action]/[id?]")] //? for optional parameters
 
 
