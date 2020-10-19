@@ -333,7 +333,8 @@ Add the file name, it will show intellisense and save the file to pull the actua
 
 <a href="/home/details/@employee.Id" class="btn btn-primary">View3</a>
 
-//using asp.net core
+//using asp.net core, the URL generates bases on the app Route template
+//i.e; company/controller/action will be auto generated in this approach
 <a asp-controller="home" asp-action="details" asp-route-id="@employee.Id" class="btn btn-primary">View4</a>
 
 
