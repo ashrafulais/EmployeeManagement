@@ -24,6 +24,13 @@ namespace EmployeeManagement.Models
             };
         }
 
+        public Employee Add(Employee employee)
+        {
+            employee.Id = employees.Max(e => e.Id) + 1;
+            employees.Add(employee);
+            return employee;
+        }
+
         public Employee GetEmployee(int Id)
         {
             return employees.FirstOrDefault(x => x.Id == Id);

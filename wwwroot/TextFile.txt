@@ -359,3 +359,7 @@ turn off integrity check from a fallback source: asp-suppress-fallback-integrity
 
 
 
+//Model binding
+To bind the request data to the controller action method params,
+model binding looks for the data in the HTTP req in this sequence:
+Form value > Route Values > Query String
