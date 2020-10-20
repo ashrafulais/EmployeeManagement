@@ -15,11 +15,11 @@ namespace EmployeeManagement.Models
             {
                 new Employee()
                 {
-                    Id=1, Name="Sam", Department="CSE", Email="mail@mail.com"
+                    Id=1, Name="Apple", Department=DepartmentEnum.IT, Email="mail@mail.com"
                 },
                 new Employee()
                 {
-                    Id=2, Name="Mun", Department="MED", Email="mail@mail.com"
+                    Id=2, Name="Orange", Department=DepartmentEnum.HR, Email="mail@mail.com"
                 }
             };
         }

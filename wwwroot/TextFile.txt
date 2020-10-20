@@ -338,3 +338,24 @@ Add the file name, it will show intellisense and save the file to pull the actua
 <a asp-controller="home" asp-action="details" asp-route-id="@employee.Id" class="btn btn-primary">View4</a>
 
 
+//each time the image changes in the server, a new hash is generated to prevent loading from the cache ; it's cache busting behaviour
+src="~/img/img_avatar1.png" asp-append-version="true" 
+
+//Environment Tag Helper
+
+<environment include="Development"> </environment>
+<environment include="Staging,Production"> </environment>
+<environment exclude="Development"> </environment>
+
+integrity checks SRI/Subresource Integrity Check is a security feature. 
+browser calculate a hash value for the file and matched with the integrity value.
+if the file is not the same / altered, the hash value won't match & the browser will block the download.
+
+if the browser failed to download the file from cdn, fallback and download another.
+check by this way: asp-fallback-test-class="sr-only" ; 
+test-class check if this class is available, to make sure the css file is here, if not download the fallback one
+
+turn off integrity check from a fallback source: asp-suppress-fallback-integrity
+
+
+
