@@ -221,7 +221,7 @@ ViewBag.PageTitle = "Employee model";
 ```
 
 
-* StronglyTypedView: -------- Recommended , uses: StronglyTyped Model Object
+## StronglyTypedView: -------- Recommended , uses: StronglyTyped Model Object
 1. Inside the Controller
 ```
 ViewBag.PageTitle = "Employee model";
