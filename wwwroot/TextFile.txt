@@ -301,6 +301,7 @@ Other supported directived:
 @addTagHelper @removeTagHelper @tagHelperPrefix @model @inherits @inject
 It follows hierarchical Execution.
 
+@inject IEmployeeRepository _repository > use it inside a view to access some data
 
 //Routing
 //---------------------------------------
@@ -363,3 +364,46 @@ turn off integrity check from a fallback source: asp-suppress-fallback-integrity
 To bind the request data to the controller action method params,
 model binding looks for the data in the HTTP req in this sequence:
 Form value > Route Values > Query String
+
+
+IActionResult > RedirectToActionResult + ViewResult
+
+Builtin validation attributes: RegularExpression, Required, Range, MinLength, MaxLength, Compare
+
+
+//AddSingleton vs AddScoped vs AddTransient
+------------------------------------------
+
+HomeController creates an instance of IEmployeeRepository.
+View @inject this repository also. ( @inject IEmployeeRepository _repository )
+
+1. AddSingleton : single instance served for every HTTP request throughout the application
+When a request is received. HomeController.IEmployeeRepository instance is served to the View.IEmployeeRepository.
+
+List.Elements = 3
+HttpRequest.Add > List.Elements++ : 4
+HttpRequest.Count = 4 (last 3 + 1)
+
+HttpRequest.Add > List.Elements++ : 5
+HttpRequest.Count = 5 (last 4 + 1)
+
+
+2. AddScoped : gets the same instace within the scope of a given http request but a new instance across different HTTP request. InitialRequest+CurrentRequest
+
+List.Elements = 3
+HttpRequest.Add > List.Elements++ : 4
+HttpRequest.Count = 4 (initial 3 + 1)
+
+HttpRequest.Add > List.Elements++ : 5
+HttpRequest.Count = 4 (initial 3 + 1)
+
+
+3. AddTransient : A new instance is provided for every request, request scope (same http request / different) doesn't matter.
+
+List.Elements = 3
+HttpRequest.Add > List.Elements++ : 4
+HttpRequest.Count = 3 (initial 3 )
+
+HttpRequest.Add > List.Elements++ : 5
+HttpRequest.Count = 3 (initial 3 )
+
