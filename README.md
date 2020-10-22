@@ -445,7 +445,7 @@ HttpRequest.Count = 3 (initial 3 )
 
 
 
-##Entity Framework Core
+## Entity Framework Core
 
 ORM - Object Relational Mapper
 MS Official Data Access Platform
@@ -456,4 +456,6 @@ Code First Approach:
 
 Database First Approach : when we have an existing database
 1. Create the Domain and DbContext classes based on the existing database
+
+
 
