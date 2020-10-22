@@ -407,3 +407,19 @@ HttpRequest.Count = 3 (initial 3 )
 HttpRequest.Add > List.Elements++ : 5
 HttpRequest.Count = 3 (initial 3 )
 
+
+
+
+//Entity Framework Core
+------------------------------------------
+
+ORM - Object Relational Mapper
+MS Official Data Access Platform
+
+Code First Approach: 
+1. Create ApplicationDomain Classes & DbContext classes
+2. Based on those, EF Core creates the database and the database tables
+
+Database First Approach : when we have an existing database
+1. Create the Domain and DbContext classes based on the existing database
+
