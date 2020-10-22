@@ -1,6 +1,8 @@
-﻿
-//Routing system
-//---------------------------------------
+﻿#Notes on ASP.NET Core Project
+
+##Routing system
+
+```
 app.UseRouting();
 app.UseEndpoints(endpoints =>
 {
@@ -9,9 +11,10 @@ app.UseEndpoints(endpoints =>
         await context.Response.WriteAsync("Hello World!");
     });
 });
+```
 
-//Middleware request pipeline: MW! Incoming > Hello > MW1.OutGoing
-//---------------------------------------
+##Middleware request pipeline: MW! Incoming > Hello > MW1.OutGoing
+```
 app.Use(async (context, next) =>
 {
     logger.LogInformation("MW1: Incoming request");
@@ -23,10 +26,10 @@ app.Run(async (context) =>
 {
     await context.Response.WriteAsync("Hello Munuiiii");
 });
+```
 
-
-//custom default file selection
-//---------------------------------------
+##custom default file selection
+```
 DefaultFilesOptions defaultFiles = new DefaultFilesOptions();
 defaultFiles.DefaultFileNames.Clear();
 defaultFiles.DefaultFileNames.Add("demofile.html");
@@ -34,10 +37,11 @@ defaultFiles.DefaultFileNames.Add("demofile.html");
 app.UseDefaultFiles(defaultFiles); 
 //----Serve static files : UseDefaultFiles must be registered before UseStaticFiles Middleware
 app.UseStaticFiles();
+```
 
+#custom default file name from file directory also
 
-//custom default file name from file directory also
-//---------------------------------------
+```
 FileServerOptions fileServer = new FileServerOptions();
 fileServer.DefaultFilesOptions.DefaultFileNames.Clear();
 fileServer.DefaultFilesOptions.DefaultFileNames.Add("demofile.html");
@@ -45,53 +49,57 @@ fileServer.DefaultFilesOptions.DefaultFileNames.Add("demofile.html");
 //----Serves the index.html / default.html files first
 app.UseFileServer(fileServer);
 //UseFileServer = UseDirectoryBrowser+UseDefaultFiles+UseStaticFiles
+```
 
-//When the error won't be thrown
-//---------------------------------------
+##When the error won't be thrown
+```
 app.Run(async (context) =>
 {
     //The error won't be thrown if the default file is found previously
     throw new Exception("Error occurred");
     await context.Response.WriteAsync("Hello Munuiiii");
 });
+```
 
-
-
-//number of lines to show before the error line
+##number of lines to show before the error line
+```
 var devExceptionOptions = new DeveloperExceptionPageOptions()
 {    
     SourceCodeLineCount = 10
 };
 //contains stack trace, cookies, headers, query string
 app.UseDeveloperExceptionPage(devExceptionOptions);
+```
+
+##Environment variables
 
 
-//Environment variables
-//---------------------------------------
-
-1 Development : Debug, Unhandlex errors, Unminified scripts, 
+1. Development : Debug, Unhandlex errors, Unminified scripts, 
     developer exception page
 
-2 Staging: Identical to production, identity deployment related issues, 
+2. Staging: Identical to production, identity deployment related issues, 
     B2B apps service provider EndToEnd testing, 
     minified scripts loaded, generic error message
 
-3 Production : Configured security, custom error page
+3. Production : Configured security, custom error page
 
-ASPNETCORE_ENVIRONMENT in the properties>launchsettings.json
-ASPNETCORE_ENVIRONMENT comes from the json file or windows system variable
+
+>ASPNETCORE_ENVIRONMENT in the properties>launchsettings.json
+>ASPNETCORE_ENVIRONMENT comes from the json file or windows system variable
     any option is okay
 
 IHostingEnvironment Type: IsDevelopment, IsStaging, IsProduction
+
 check custom environment name: env.IsEnvironment("CustomEnv") // UAT, QA etc
+
 When not specified, runtime default name is: Production
 
-custom error page redirect: IApplicationBuilder.UseExceptionHandler("/Error")
 
+>custom error page redirect: IApplicationBuilder.UseExceptionHandler("/Error")
 
-//MVC
-//---------------------------------------
+##MVC
 
+```
 Request >     Controller     DataSource
               /        \       |
             View   >   Model  <|
@@ -99,57 +107,63 @@ Request >     Controller     DataSource
 Response <
 
 domain.com/controller/method/parameter
+```
 
-//doesn't require to specify a path, default: Home/Index
-app.UseMvcWithDefaultRoute();
-If not found, runt he next middleware data like, WriteAsync() data
+##doesn't require to specify a path, default: Home/Index
+>app.UseMvcWithDefaultRoute();
 
-use mvc middleware in .net 3.0 by modifying this service > services.AddMvc(options => options.EnableEndpointRouting = false);
+* If not found, runt he next middleware data like, WriteAsync() data
+
+* use mvc middleware in .net 3.0 by modifying this service > services.AddMvc(options => options.EnableEndpointRouting = false);
 
 
-//Dependency injection : procides loose coupling, easy testing system
-//---------------------------------------
-//This is a tightly coupled system, we can not easily change the implementation of the interface later
-IEmployeeRepository _repository = new MockEmployeeRepository()
+##Dependency injection : procides loose coupling, easy testing system
 
-//When there are a large number of controllers, using a single instance of interface is helpful, no need to worry about the implementation of the interface
-services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>();
+>This is a tightly coupled system, we can not easily change the implementation of the interface later
+` IEmployeeRepository _repository = new MockEmployeeRepository()`
 
-AddSingleton : Created at the first request and that instance is used through the whole application lifetime
+>When there are a large number of controllers, using a single instance of interface is helpful, no need to worry about the implementation of the interface
+` services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>(); `
 
-AddTransient : Creates instance for every request 
-AddScoped : Creates instance once per request within the scope
+* AddSingleton : Created at the first request and that instance is used through the whole application lifetime
 
-//Send custom object as json type from the controller
+* AddTransient : Creates instance for every request 
+* AddScoped : Creates instance once per request within the scope
+
+##Send custom object as json type from the controller
+```
 public ObjectResult Details()
 {
     return new ObjectResult(_repository.GetEmployee(1));
 }
+```
 
-//Send XML format data, default is json
+##Send XML format data, default is json
+```
 services.AddMvc(options => options.EnableEndpointRouting = false)
          .AddXmlSerializerFormatters();
 //set the postman request parameter: (Accept: application/xml)
+```
 
+##Customize view discovery in asp net core mvc
 
-//Customize view discovery in asp net core mvc
-//---------------------------------------
-
-//MVC look for the view in this format
+>MVC searchs the view in this format
+```
 InvalidOperationException: The view 'Details' was not found. The following locations were searched:
 /Views/Home/Details.cshtml
 /Views/Shared/Details.cshtml
 /Pages/Shared/Details.cshtml
+```
 
+> custom view name, not following the method name
+*//--File inside the same controller directory name : Views>Home>Test
+` return View("Test"); `
 
-//custom view name, not following the method name
-//--File inside the same controller directory name : Views>Home>Test
-return View("Test");
+> --file inside the views folder : Views>Test>File
+`return View("../Test/TestFile");`
 
-//--file inside the views folder : Views>Test>File
-return View("../Test/TestFile");
-
-//--file inside the project directory : EmployeeManagement>TestViews>ViewFile
+> --file inside the project directory : EmployeeManagement>TestViews>ViewFile
+```
 return View("TestViews/TestViewFile.cshtml"); or 
 return View("~/TestViews/TestViewFile.cshtml"); or
 return View("~/Views/Home/Index.cshtml", model);
@@ -157,6 +171,7 @@ return View("~/Views/Home/Index.cshtml", model);
 View(object model) // file with the same action method name
 View(string viewName) //custom view name
 View(string viewName, object model) // custom view and model data
+```
 
 
 //Pass data to view
@@ -167,15 +182,19 @@ Indication to razor that we're switching html to c#
 
 ViewData:--------
 //1. inside the controller
+```
 ViewData["Employee"] = model;
 ViewData["PageTitle"]= "Employee model";
+```
 
 //2. inside a cshtml view
+```
 <h3> @ViewData["PageTitle"] </h3>
 @{
     var employee = ViewData["Employee"] as EmployeeManagement.Models.Employee;
 }
 <p>@employee.Name</p>
+```
 
 It's a weakly typed, key value store, dynamically resolved at runtime
 No compiletime check, No IntelliSense, Misspelling might happen
@@ -187,53 +206,64 @@ No IntelliSense,
 Cannot perform runtime binding on a null reference
 
 //1. inside the controller
+```
 ViewBag.Employee = employeeModel;
 ViewBag.PageTitle = "Employee model";
+```
 
 //2. inside a cshtml view
+```
 <h2>Page title: @ViewBag.PageTitle</h2>
 <p>Name: @ViewBag.Employee.Name </p>
+```
 
 
-StronglyTypedView: -------- Recommended , uses: StronglyTyped Model Object
+* StronglyTypedView: -------- Recommended , uses: StronglyTyped Model Object
 //1. Inside the Controller
+```
 ViewBag.PageTitle = "Employee model";
 return View(employeeModel);
+```
 
 //2. for the View
+```
 @model EmployeeManagement.Models.Employee
 <h2>Page title: @ViewBag.PageTitle</h2>
 <p>Name: @Model.Name </p>
 <p>Department: @Model.Department </p>
+```
 
-Define view using the @model directive
-To acces the data, we use @Model directive 
-Contains compile time checking and IntelliSense
+* Define view using the @model directive
+* To acces the data, we use @Model directive 
+* Contains compile time checking and IntelliSense
 
 
-//View models : DTO / Data Transfer Object
-//---------------------------------------
+##View models : DTO / Data Transfer Object
+
 Collection of one or more properties, Parent model
 
 //1. Inside the Controller
+```
 var homeDetailsViewModel = new HomeDetailsViewModel()
 {
     Employee = _repository.GetEmployee(1),
     PageTitle = "Employee model"
 };
+```
 
 //2. for the View
+```
 @model EmployeeManagement.ViewModels.HomeDetailsViewModel
 <h2>Page title: @Model.PageTitle</h2>
 <p>Name: @Model.Employee.Name </p>
+```
 
+##List / Table view
 
-//List / Table view
-//---------------------------------------
-
-list model direcive: @model IEnumerable<EmployeeManagement.Models.Employee>
+list model direcive: `@model IEnumerable<EmployeeManagement.Models.Employee>`
 
 looping
+```
 @foreach(var employee in Model)
 {
 <tr>
@@ -242,24 +272,29 @@ looping
     <td>@employee.Department</td>
 </tr>
 }
+```
 
 
-Layout view is the Master page
+> Layout view is the Master page
 
 //SECTION
 Section can be optional
 Section layout view is rendered at the location where RenderSection() method is called
 
 before body tag:-------
+```
 @if(IsSectionDefined("Scripts"))
 {
     @RenderSection("Scripts", required: true)
 }
+```
 
 inside the page area:-------- drag the script file to get the automatic script tag
+```
 @section Scripts {
     <script src="~/js/script.js"></script>
 }
+```
 
 
 //ViewStart
@@ -389,29 +424,28 @@ HttpRequest.Count = 5 (last 4 + 1)
 
 
 2. AddScoped : gets the same instace within the scope of a given http request but a new instance across different HTTP request. InitialRequest+CurrentRequest
-
+```
 List.Elements = 3
 HttpRequest.Add > List.Elements++ : 4
 HttpRequest.Count = 4 (initial 3 + 1)
 
 HttpRequest.Add > List.Elements++ : 5
 HttpRequest.Count = 4 (initial 3 + 1)
-
+```
 
 3. AddTransient : A new instance is provided for every request, request scope (same http request / different) doesn't matter.
-
+```
 List.Elements = 3
 HttpRequest.Add > List.Elements++ : 4
 HttpRequest.Count = 3 (initial 3 )
 
 HttpRequest.Add > List.Elements++ : 5
 HttpRequest.Count = 3 (initial 3 )
+```
 
 
 
-
-//Entity Framework Core
-------------------------------------------
+##Entity Framework Core
 
 ORM - Object Relational Mapper
 MS Official Data Access Platform
