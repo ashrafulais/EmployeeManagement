@@ -531,4 +531,24 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 
 ```
 
+### Upload a file 
+
+Basic example for a image file in the www/img folder. 
+
+```
+// IWebHostEnvironment hostingEnvironment
+private string ProcessUploadedImage(EmployeeCreateViewModel employeeModel)
+{
+    string uniqueFileName = null;
+    if (employeeModel.Photo != null)
+    {
+        string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "img"); //www folder
+        uniqueFileName = Guid.NewGuid().ToString() + "_" + employeeModel.Photo.FileName;
+        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+        employeeModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+    }
+
+    return uniqueFileName;
+}
+```
 
