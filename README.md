@@ -503,13 +503,32 @@ Get_Help Add-Migration
 
 Add-Migration Initial -Context "BasicWebAppDbContext" -StartupProject "BasicWebApp" -Project "BasicWebApp.Data"
 
+//Apply the latest migration or an old one to Revert the migration
 Update-Database [[-Migration] <String>] [-Context <String>] [-Project <String>] [-StartupProject <String>] [<CommonParameters>]
 Update-Database
 
+//Remove the migration that is not yet updated to database
 Remove-Migration [-Force] [-Context <String>] [-Project <String>] [-StartupProject <String>] [<CommonParameters>]
 Remove-Migration
 
 Update-Database Initial -Context "BasicWebAppDbContext" -StartupProject "BasicWebApp" -Project "BasicWebApp.Data"
 
 ```
+
+### Extension method definition
+```
+//definition
+public static class ModelBuilderExtensions
+{
+    public static void LoadSeedData(this ModelBuilder modelBuilder) { }
+}
+
+//use case
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.LoadSeedData();
+}
+
+```
+
 

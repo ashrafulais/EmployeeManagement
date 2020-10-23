@@ -1,0 +1,86 @@
+﻿@model EmployeeEditViewModel
+
+@{
+    ViewBag.Title = "Edit employee";
+
+    var photoPath = "~/img/img_avatar1.png";
+
+    if (Model.ExistingPhotoPath != null)
+    {
+        photoPath = "~/img/" + (Model.ExistingPhotoPath ?? "img_avatar1.png");
+    }
+}
+
+    <div class="col-sm-7 mt-3">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <form enctype="multipart/form-data" asp-controller="home" asp-action="edit" method="post">
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ExistingPhotoPath" />
+
+            <div class="form-group">
+                <label asp-for="Name">Name:</label>
+                <input asp-for="Name" class="form-control" placeholder="Name">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email">Email:</label>
+                <input asp-for="Email" type="email" class="form-control" placeholder="Enter email">
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Department">Department:</label>
+                <select asp-for="Department" asp-items="Html.GetEnumSelectList<DepartmentEnum>()"
+                        class="custom-select">
+                    <option value="">Please select a department</option>
+                </select>
+                <span asp-validation-for="Department" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Photo">Photo:</label>
+                <div class="custom-file mb-1">
+                    <input asp-for="Photo" class="form-control custom-file-input">
+                    <label class="custom-file-label">Choose photo to change...</label>
+                </div>
+
+                <img class="card-img-top edit-form-img-preview" src="@photoPath" asp-append-version="true" alt="Card image">
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary mr-1">Update</button>
+                <a asp-controller="home" asp-action="index" class="btn btn-primary" >Cancel</a>
+            </div>
+
+            @section Scripts {
+                <script>
+                    $(document).ready(function () {
+                        $('.custom-file-input').on("change", function (event) {
+                            var originalFile = $(this).val();
+                            var fileName = $(this).val().split("\\").pop();
+                            $(this).next('.custom-file-label').html(
+                                (fileName.length > 25) ? fileName.substring(0, 25) + "..." : fileName
+                            );
+
+                            preview_editing_image(event.originalEvent);
+                        });
+
+                        //raw js code to preview the selected image
+                        function preview_editing_image(event) {
+                            var reader = new FileReader();
+                            reader.onload = function () {
+                                var output = document.querySelector('.edit-form-img-preview');
+                                output.src = reader.result;
+                            }
+                            reader.readAsDataURL(event.target.files[0]);
+                        }
+
+                    });
+                </script>
+            }
+
+        </form>
+    </div>
