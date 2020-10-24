@@ -138,7 +138,19 @@ public ObjectResult Details()
 }
 ```
 
-## Send XML format data, default is json
+### JSon data type format
+
+```
+// Pascal casing
+services.AddControllersWithViews().
+AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+});
+```
+
+### Send XML format data, default is json
 ```
 services.AddMvc(options => options.EnableEndpointRouting = false)
          .AddXmlSerializerFormatters();
@@ -180,7 +192,7 @@ View(string viewName, object model) // custom view and model data
 * Options: ViewData, ViewBag, StronglyTypedView
 * Indication to razor that we're switching html to c#
 
-### ViewData:--------
+### ViewData:
 
 1. inside the controller
 ```
@@ -201,7 +213,7 @@ It's a weakly typed, key value store, dynamically resolved at runtime
 No compiletime check, No IntelliSense, Misspelling might happen
 
 
-### ViewBag:--------
+### ViewBag:
 A wrapper around viewdata, DynamicProperties, No compiletime type checking,
 
 No IntelliSense,
@@ -221,7 +233,9 @@ ViewBag.PageTitle = "Employee model";
 ```
 
 
-## StronglyTypedView: -------- Recommended , uses: StronglyTyped Model Object
+## StronglyTypedView: Recommended 
+It uses: StronglyTyped Model Object
+
 1. Inside the Controller
 ```
 ViewBag.PageTitle = "Employee model";
@@ -586,4 +600,90 @@ This middleware intercepts the response and provides the error page and the 404 
 The URL stays the same.
 
 * Global exception handling
+
+## Logging
+
+Logging provider stores or displays logs
+
+Grouping the error category by the class in this way bu injecting ILogger service:
+
+` ILogger<ErrorController> logger; `
+
+```
+//string interpolation
+logger.LogError($"The path {exceptionDetails.Path} threw an exception {exceptionDetails.Error}");
+
+//logged error
+warn: EmployeeManagement.Controllers.ErrorController[0]
+      404 error occurred. Path = /gg and query string = 
+```
+
+* Logging using NLog.Web.AspNetCore
+nlog.config file contains the required logging config for nlog.
+enable copy to bin folder: nlog.config > properties - Copy to Output Directory = Copy if newer
+
+* ASP.NET Core LogLevel config:
+Trace=0, Debug=1, Information=2, Warning=3, Error=4, Critical=5, None=6
+example: `Microsoft.Extensions.Logging.LogTrace()`
+
+* when the log level `"Default": "Warning"` , then any log message >= Warning will show.
+
+* Custom log level for specific file: inside the appsettings > Logging > LogLevel
+` "EmployeeManagement.Models.SqlEmployeeRepository: : "Trace" `
+
+* filter logging by logging provider
+1. Logging > Debug > LogLevel - for the Debug type
+2. Logging > LogLevel - for the rest of the types
+
+### launchsettings.json
+
+* profiles
+1. IIS Express - run using IISExpress server
+2. EmployeeManagement - run using `dotnet run` from cmd 
+
+## Get valus from the appsettings.json file - 2 types
+
+```
+public UserController(IConfiguration iConfig)  
+{  
+   configuration = iConfig;  
+} 
+
+string dbConn = configuration.GetSection("MySettings").GetSection("DbConnection").Value;  
+string dbConn2 = configuration.GetValue<string>("MySettings:DbConnection");
+
+```
+
+## Identity
+
+It's a membership system with CRUD ops for User accounts
+Account confirmation
+Authentication, Authorization
+Password recovery
+Auth. with SMS
+External login providers like, Google, Facebook
+
+1. Derive the context from `Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityDbContext`
+
+DbContext > IdentityUserContext > IdentityDbContext
+
+2. Identity service configure
+
+```
+services.AddIdentity<IdentityUser, IdentityRole>()
+.AddEntityFrameworkStores<AppDbContext>(); //use EfCore to get user & role info
+```
+
+`IdentityUser` contains the user's login info like ID, Email, Password hash.
+We can make a custom class and derive it from IdentityUser to add `Gender` or similar kinds of attributes.
+`IdentityUser > table: AspNetUsers`
+
+3. Add the authentication middleware before the mvc middleware
+`app.UseAuthentication();`
+
+4. Create Identity tables
+
+
+
+
 

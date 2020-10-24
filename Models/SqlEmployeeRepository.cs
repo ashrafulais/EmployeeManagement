@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,13 @@ namespace EmployeeManagement.Models
     public class SqlEmployeeRepository : IEmployeeRepository
     {
         private readonly AppDbContext context;
+        private readonly ILogger<SqlEmployeeRepository> logger;
 
-        public SqlEmployeeRepository(AppDbContext context)
+        public SqlEmployeeRepository(AppDbContext context,
+            ILogger<SqlEmployeeRepository> logger)
         {
             this.context = context;
+            this.logger = logger;
         }
 
         public Employee Add(Employee employee)
@@ -40,6 +44,8 @@ namespace EmployeeManagement.Models
 
         public IEnumerable<Employee> GetEmployees()
         {
+            //logger.LogTrace("Employee info sending trace.");
+            //logger.LogWarning("Employee info sending warning.");
             return context.Employees.AsEnumerable();
         }
 

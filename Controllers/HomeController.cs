@@ -33,7 +33,6 @@ namespace EmployeeManagement.Controllers
 
         public ViewResult Details(int? id)
         {
-            throw new Exception("error");
             Employee employee = repository.GetEmployee(id ?? -1);
             if(employee == null)
             {

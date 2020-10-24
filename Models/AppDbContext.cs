@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Models
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
@@ -19,6 +20,9 @@ namespace EmployeeManagement.Models
         //Initial Seed Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //map keys to the .net core identity
+            //because we are overriding the method, we need to specify it in the base method
+            base.OnModelCreating(modelBuilder);
             modelBuilder.LoadSeedData();
         }
 

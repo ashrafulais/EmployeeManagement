@@ -6,6 +6,7 @@ using EmployeeManagement.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,9 @@ namespace EmployeeManagement
                 options.UseSqlServer(config.GetConnectionString("EmployeeDbConnection"))
             );
 
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>(); //use EfCore to get user & role info
+
             services.AddScoped<IEmployeeRepository, SqlEmployeeRepository>();
 
             services.AddMvc(options => options.EnableEndpointRouting = false)
@@ -52,9 +56,7 @@ namespace EmployeeManagement
             }
             //Serves the index.html / default.html files first
             app.UseStaticFiles();
-
-            //app.UseMvcWithDefaultRoute();
-
+            app.UseAuthentication();
 
             //> conventional routing
             app.UseMvc(routes =>
