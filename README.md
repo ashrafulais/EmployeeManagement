@@ -545,10 +545,34 @@ private string ProcessUploadedImage(EmployeeCreateViewModel employeeModel)
         string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "img"); //www folder
         uniqueFileName = Guid.NewGuid().ToString() + "_" + employeeModel.Photo.FileName;
         string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-        employeeModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+        using(var fileStream = new FileStream(filePath, FileMode.Create) )
+        {
+            employeeModel.Photo.CopyTo(fileStream);
+        }
     }
 
     return uniqueFileName;
 }
 ```
+
+
+### 404 type error
+
+1. Resource with the specified id does not exist.
+```
+if(employee == null)
+{
+    Response.StatusCode = 404;
+    return View("EmployeeNotFound", id);
+}
+```
+2. The URL does not match with any route
+
+> Centralized 404 Error handling
+1. UseStatusCodePages - default error text returns
+2. UseStatusCodePagesWithRedirects - custom error page view
+3. UseStatusCodePagesWithReExecute
+
+
+
 

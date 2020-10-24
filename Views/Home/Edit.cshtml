@@ -3,12 +3,7 @@
 @{
     ViewBag.Title = "Edit employee";
 
-    var photoPath = "~/img/img_avatar1.png";
-
-    if (Model.ExistingPhotoPath != null)
-    {
-        photoPath = "~/img/" + (Model.ExistingPhotoPath ?? "img_avatar1.png");
-    }
+    var photoPath = "~/img/" + (Model.ExistingPhotoPath ?? "img_avatar1.png");
 }
 
     <div class="col-sm-7 mt-3">

@@ -1,0 +1,14 @@
+﻿@model int
+
+@{
+    ViewBag.Title = "Not Found";
+}
+
+<div class="alert alert-info">
+    <h4 class="display-4"> 404 Error - Resource Not Found </h4>
+
+    <p> @ViewBag.ErrorMessage </p>
+</div>
+
+<a asp-controller="Index" asp-action="index" class="btn btn-info">Home</a>
+

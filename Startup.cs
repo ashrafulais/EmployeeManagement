@@ -45,7 +45,10 @@ namespace EmployeeManagement
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseStatusCodePagesWithRedirects("/Error/{0}");
+            }
             //Serves the index.html / default.html files first
             app.UseStaticFiles();
 

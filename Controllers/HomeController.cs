@@ -33,9 +33,16 @@ namespace EmployeeManagement.Controllers
 
         public ViewResult Details(int? id)
         {
+            Employee employee = repository.GetEmployee(id ?? -1);
+            if(employee == null)
+            {
+                Response.StatusCode = 404;
+                return View("EmployeeNotFound", id);
+            }
+
             var homeDetailsViewModel = new HomeDetailsViewModel()
             {
-                Employee = repository.GetEmployee(id??1),
+                Employee = employee,
                 PageTitle = "Employee model"
             };
 
@@ -136,7 +143,10 @@ namespace EmployeeManagement.Controllers
                 string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "img"); //www folder
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + employeeModel.Photo.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                employeeModel.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                using(var fileStream = new FileStream(filePath, FileMode.Create) )
+                {
+                    employeeModel.Photo.CopyTo(fileStream);
+                }
             }
 
             return uniqueFileName;
