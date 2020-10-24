@@ -585,5 +585,5 @@ Returns a 404 type response taht can be seen in the browser's network tab.
 This middleware intercepts the response and provides the error page and the 404 type error.
 The URL stays the same.
 
-
+* Global exception handling
 
