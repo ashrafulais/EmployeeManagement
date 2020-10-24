@@ -571,8 +571,19 @@ if(employee == null)
 > Centralized 404 Error handling
 1. UseStatusCodePages - default error text returns
 2. UseStatusCodePagesWithRedirects - custom error page view
+
+Initially when the URL does not matches with any of the items, 
+the initial request gives a 302-NotFound status code. 
+So, this middleware component issues another get request.
+The redirected 404 page is a 200 type response.
+The original URl changes also.
+
 3. UseStatusCodePagesWithReExecute
 
+ReExecute the pipeline and returns the right status code.
+Returns a 404 type response taht can be seen in the browser's network tab.
+This middleware intercepts the response and provides the error page and the 404 type error.
+The URL stays the same.
 
 
 
