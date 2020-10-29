@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Controllers
 {
-    [Authorize]
+    //global authorization applied in the startup class
+    //[Authorize]
     public class HomeController : Controller
     {
         private readonly IWebHostEnvironment hostingEnvironment;

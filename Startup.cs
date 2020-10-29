@@ -46,14 +46,11 @@ namespace EmployeeManagement
             })
             .AddEntityFrameworkStores<AppDbContext>(); //use EfCore to get user & role info
 
-            /*services.Configure<IdentityOptions>(options =>
-            {
-                options.Password.RequiredLength = 4;
-            });*/
 
             services.AddScoped<IEmployeeRepository, SqlEmployeeRepository>();
 
             //we want the user to be authenticated
+            //AuthorizationPolicyBuilder provides global authentication
             services.AddRazorPages()
                 .AddMvcOptions(options =>
                 {

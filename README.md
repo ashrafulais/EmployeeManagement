@@ -725,6 +725,28 @@ signInManager
 To change the default login page... 
 ` services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/LogIn"); `
 
+* change the password strongness level
+1. using IdentityOptions
+
+```
+services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequiredLength = 4;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireDigit = true;
+    options.Password.RequiredUniqueChars = 3;
+});
+```
+
+2. Configure the IdentityOptions
+```
+services.AddIdentity<IdentityUser, IdentityRole>(options => 
+{
+    options.Password.RequiredLength = 4;
+}
+```
 
 ## Auth
 
@@ -733,6 +755,21 @@ Authorization : Identifying what the user can do and can't do
 
 [Authorize] : only the logged in users can access
 [AllowAnonymous] : everyone can access
+
+*. `RequireAuthenticatedUser` is one of the core requirements embedded within the `AuthorizationPolicyBuilder` class which is the tool to use to create an authorization policy
+*. The method just add the `DenyAnonymousAuthorizationRequirement` requirement to the policy requirements collection
+
+*. To apply [Authorize] attribute globally on all controllers and controller actions throughout your application modify the code in ConfigureServices method of the Startup class.
+```
+.AddMvcOptions(options =>
+{
+    var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+    options.Filters.Add(new AuthorizeFilter(policy));
+})
+```
+
 
 
 
