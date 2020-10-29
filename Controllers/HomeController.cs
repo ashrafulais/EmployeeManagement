@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.Models;
 using EmployeeManagement.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IWebHostEnvironment hostingEnvironment;
@@ -22,7 +24,7 @@ namespace EmployeeManagement.Controllers
             this.hostingEnvironment = hostingEnvironment;
         }
 
-
+        [AllowAnonymous]
         public ViewResult Index()
         {
             var employeeList = repository.GetEmployees();
@@ -31,6 +33,7 @@ namespace EmployeeManagement.Controllers
             //return repository.GetEmployee(1).Name;
         }
 
+        [AllowAnonymous]
         public ViewResult Details(int? id)
         {
             Employee employee = repository.GetEmployee(id ?? -1);

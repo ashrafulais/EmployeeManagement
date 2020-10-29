@@ -722,11 +722,18 @@ signInManager
     .PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RememberMe, false)
 ```
 
+To change the default login page... 
+` services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/LogIn"); `
+
 
 ## Auth
 
 Authentication : Identifying the user
 Authorization : Identifying what the user can do and can't do
+
+[Authorize] : only the logged in users can access
+[AllowAnonymous] : everyone can access
+
 
 
 
