@@ -32,8 +32,21 @@ namespace EmployeeManagement
                 options.UseSqlServer(config.GetConnectionString("EmployeeDbConnection"))
             );
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>(); //use EfCore to get user & role info
+            services.AddIdentity<IdentityUser, IdentityRole>(options => 
+            {
+                options.Password.RequiredLength = 4;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = true;
+                options.Password.RequiredUniqueChars = 3;
+            })
+            .AddEntityFrameworkStores<AppDbContext>(); //use EfCore to get user & role info
+
+            /*services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = 4;
+            });*/
 
             services.AddScoped<IEmployeeRepository, SqlEmployeeRepository>();
 

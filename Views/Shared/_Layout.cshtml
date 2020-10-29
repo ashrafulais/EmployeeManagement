@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<IdentityUser> signInManager;
 
 <html>
 <head>
@@ -10,19 +10,18 @@
     </environment>
 
     <environment include="Staging,Production">
-        <link rel="stylesheet" 
-              href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
-              integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" 
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+              integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
               crossorigin="anonymous"
               asp-fallback-href="~/lib/bootstrap/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only"
               asp-fallback-test-property="position"
               asp-fallback-test-value="absolute"
-              asp-suppress-fallback-integrity="true"
-              >
+              asp-suppress-fallback-integrity="true">
     </environment>
 
-    <link href="~/css/style.css" rel="stylesheet" asp-append-version="true"/>
+    <link href="~/css/style.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
     <div class="container">
@@ -42,9 +41,27 @@
                     <li class="nav-item">
                         <a asp-controller="home" asp-action="create" class="nav-link">Create</a>
                     </li>
-                    <li class="nav-item">
-                        <a asp-controller="account" asp-action="register" class="nav-link">Register</a>
-                    </li>
+
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <form method="post" asp-action="logout" asp-controller="account">
+                                <button type="submit" class="nav-link btn btn-link">Logout @User.Identity.Name </button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a asp-controller="account" asp-action="register" class="nav-link">Register</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a asp-controller="account" asp-action="login" class="nav-link">Login</a>
+                        </li>
+                    }
+
+
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="text" placeholder="Search">
@@ -77,7 +94,7 @@
 
     @if (IsSectionDefined("Scripts"))
     {
-    @RenderSection("Scripts", required: true)
+        @RenderSection("Scripts", required: true)
     }
 
 </body>

@@ -684,6 +684,54 @@ We can make a custom class and derive it from IdentityUser to add `Gender` or si
 4. Create Identity tables
 
 
+## User and Signin manager
+
+* UserManager<IdentityUser>
+1. CreateAsync
+2. DeleteAsync
+3. UpdateAsync, etc.
+
+* SignInManager<IdentityUser>
+1. SignInAsync
+2. SignOutAsync
+3. IsSignedIn, etc.
+
+SignInAsync.isPersistent sets the SessionCookie or a Permanent cookie. 
+to set the session cookie: isPersistent: false
+
+* The basic idea of user creation and signing option
+```
+var user = new IdentityUser
+{
+    UserName = regModel.Email,
+    Email = regModel.Email
+};
+
+var result = await userManager.CreateAsync(user, regModel.Password);
+
+if(result.Succeeded)
+{
+    await signInManager.SignInAsync(user, isPersistent: false);
+    return RedirectToAction("index", "home");
+}
+```
+
+* login by password
+```
+signInManager
+    .PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RememberMe, false)
+```
+
+
+## Auth
+
+Authentication : Identifying the user
+Authorization : Identifying what the user can do and can't do
+
+
+
+
+
 
 
 
