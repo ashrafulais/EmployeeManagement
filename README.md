@@ -771,7 +771,30 @@ Authorization : Identifying what the user can do and can't do
 ```
 
 
+## ASP.NET Core 2.2 Version of MVC
 
+1. Inside the ConfigureServices method
+```
+//we want the user to be authenticated
+services.AddMvc(options =>
+{
+    var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+    options.Filters.Add(new AuthorizeFilter(policy));
+    options.EnableEndpointRouting = false;
+})
+.AddXmlSerializerFormatters();
+
+```
+2. Configure method
+```
+//app.UseMvc() for the default option
+app.UseMvc(routes =>
+{
+    routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+});
+```
 
 
 

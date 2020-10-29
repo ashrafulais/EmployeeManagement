@@ -60,17 +60,6 @@ namespace EmployeeManagement
                     options.Filters.Add(new AuthorizeFilter(policy));
                 })
                 .AddXmlSerializerFormatters();
-
-            //we want the user to be authenticated
-            /*services.AddMvc(options => 
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                                .RequireAuthenticatedUser()
-                                .Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
-            })
-            .AddXmlSerializerFormatters();*/
-            //options.EnableEndpointRouting = false,
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,15 +75,9 @@ namespace EmployeeManagement
                 app.UseExceptionHandler("/Error"); //error controller
                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
-            //Serves the index.html / default.html files first
+
             app.UseStaticFiles();
             app.UseAuthentication();
-            
-            //> conventional routing
-            /*app.UseMvc(routes =>
-            {
-                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-            });*/
 
             app.UseRouting();
             app.UseAuthorization();
@@ -102,8 +85,6 @@ namespace EmployeeManagement
             {
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
-
-            //app.UseMvc();
 
         }
     }
