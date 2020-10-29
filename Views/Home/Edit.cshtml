@@ -52,6 +52,8 @@
 
             @section Scripts {
                 <script>
+                    $.ajaxPrefilter(function (options, originalOptions, jqXHR) { options.async = true; });
+
                     $(document).ready(function () {
                         $('.custom-file-input').on("change", function (event) {
                             var originalFile = $(this).val();

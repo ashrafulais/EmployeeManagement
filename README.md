@@ -796,7 +796,24 @@ app.UseMvc(routes =>
 });
 ```
 
+### Pass query string or the ReturnUrl
 
+1. in the @ directive area, after the layout definition
+`var returnUrl = @Context.Request.Query["returnurl"];`
+
+2. In the form tag
+`<form asp-controller="account" asp-action="login" method="post" asp-route-returnurl="@returnUrl">`
+
+3. Receive the URL
+`public async Task<IActionResult> Login(LoginViewModel loginModel, string returnUrl = "")`
+
+4. Check the URL and redirect
+```
+if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+{
+    return Redirect(returnUrl);
+}
+```
 
 
 

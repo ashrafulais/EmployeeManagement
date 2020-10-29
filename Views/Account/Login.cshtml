@@ -1,12 +1,14 @@
 ﻿@model LoginViewModel
 @{
     ViewBag.Title = "Login";
+
+    var returnUrl = @Context.Request.Query["returnurl"];
 }
 
 <div class="col-sm-7 mt-3">
     <div asp-validation-summary="All" class="text-danger"></div>
 
-    <form asp-controller="account" asp-action="login" method="post">
+    <form asp-controller="account" asp-action="login" method="post" asp-route-returnurl="@returnUrl">
 
         <div class="form-group">
             <label asp-for="Email">Email:</label>
