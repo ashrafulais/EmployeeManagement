@@ -27,6 +27,13 @@ namespace EmployeeManagement.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public string Test()
+        {
+            return "Hello world";
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
@@ -34,8 +41,7 @@ namespace EmployeeManagement.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginViewModel loginModel, 
-                                                string returnUrl = "")
+        public async Task<IActionResult> Login(LoginViewModel loginModel, string returnUrl = "")
         {
             if (ModelState.IsValid)
             {
@@ -68,6 +74,22 @@ namespace EmployeeManagement.Controllers
         public IActionResult Register()
         {
             return View();
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        [AllowAnonymous]
+        public async Task<IActionResult> IsEmailInUse(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+
+            if(user is null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"Email {email} is already in use");
+            }
         }
 
         [HttpPost]

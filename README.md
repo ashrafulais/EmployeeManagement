@@ -807,13 +807,25 @@ app.UseMvc(routes =>
 3. Receive the URL
 `public async Task<IActionResult> Login(LoginViewModel loginModel, string returnUrl = "")`
 
-4. Check the URL and redirect
+4. Check the URL and redirect - to prevent the Redirect Attack
 ```
 if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
 {
     return Redirect(returnUrl);
 }
 ```
+
+
+### ASP NET Core client side validation
+
+Validate using jquery, takes the serverside validation attributes and implement client-side validation 
+
+jquery > jquery.validate > jquery.validate.unobtrusive
+
+
+*. Remote valdation
+
+
 
 
 
