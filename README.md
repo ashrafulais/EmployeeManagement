@@ -831,6 +831,14 @@ jquery > jquery.validate > jquery.validate.unobtrusive
 User and role mapping
 AspNetUsers table, AspNetRoles table >> AspNetUserRoles
 
+User mapping with the roles
+1. Role based attribute, the user can be of any one of the roles: `[Authorize(Roles = "Admin,Manager")]`
 
+2. The user must be Admin & Manager
+
+```
+[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Manager")]
+```
 
 
