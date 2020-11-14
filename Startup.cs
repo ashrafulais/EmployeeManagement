@@ -35,7 +35,7 @@ namespace EmployeeManagement
                 options.UseSqlServer(config.GetConnectionString("EmployeeDbConnection"))
             );
 
-            services.AddIdentity<IdentityUser, IdentityRole>(options => 
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => 
             {
                 options.Password.RequiredLength = 4;
                 options.Password.RequireNonAlphanumeric = false;
