@@ -51,8 +51,7 @@
     }
     </div>
     <div class="card-footer">
-        <a asp-action="addusers" class="btn btn-primary"> Add Users </a>
-        <a asp-action="removeusers" class="btn btn-primary"> Remove Users </a>
+        <a asp-action="editusersinrole" asp-controller="admin" asp-route-roleId="@Model.Id" class="btn btn-primary"> Add/Remove Users </a>
     </div>
 </div>
 

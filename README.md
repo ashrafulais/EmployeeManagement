@@ -826,7 +826,10 @@ jquery > jquery.validate > jquery.validate.unobtrusive
 *. Remote valdation
 
 
+### ASP NET Core Roles
 
+User and role mapping
+AspNetUsers table, AspNetRoles table >> AspNetUserRoles
 
 
 
