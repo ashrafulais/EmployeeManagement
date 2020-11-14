@@ -41,6 +41,9 @@
                     <li class="nav-item">
                         <a asp-controller="home" asp-action="create" class="nav-link">Create</a>
                     </li>
+                    <li class="nav-item">
+                        <a asp-controller="admin" asp-action="listroles" class="nav-link">Roles</a>
+                    </li>
 
                     @if (signInManager.IsSignedIn(User))
                     {

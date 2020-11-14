@@ -1,0 +1,62 @@
+﻿@model EditRoleViewModel
+
+@{
+    ViewBag.Title = "Edit Role";
+}
+
+<h1>Edit Role</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <form method="post" asp-controller="admin" asp-action="EditRole">
+
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" disabled/>
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="RoleName" class="control-label"></label>
+                <input asp-for="RoleName" class="form-control" />
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn btn-primary" />
+                <a asp-action="listroles" class="btn btn-primary"> Cancel </a>
+            </div>
+
+            <div asp-validation-summary="All" class="text-danger"> </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">Users in this role</div>
+    <div class="card-body">
+    @if (Model.Users.Any())
+    {
+        <ul>
+        @foreach(var user in Model.Users)
+        {
+            <li> @user </li>
+        }
+        </ul>
+
+    }
+    else
+    {
+        <p> No users found </p>
+    }
+    </div>
+    <div class="card-footer">
+        <a asp-action="addusers" class="btn btn-primary"> Add Users </a>
+        <a asp-action="removeusers" class="btn btn-primary"> Remove Users </a>
+    </div>
+</div>
+
+<div>
+    <a asp-action="listroles">Back to List</a>
+</div>
+
