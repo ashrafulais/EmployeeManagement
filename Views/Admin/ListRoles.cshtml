@@ -8,34 +8,47 @@
 
 @if (Model.Any())
 {
-<a asp-controller="admin" asp-action="createrole" class="btn btn-primary m-1">Create Role</a>
+    <a asp-controller="admin" asp-action="createrole" class="btn btn-primary m-1">Create Role</a>
 
-<div class="row">
+    <div class="row">
 
-    @foreach (var role in Model)
-    {
+        @foreach (var role in Model)
+        {
 
-        <div class="col-sm-4">
-            <div class="card mt-2">
+            <div class="col-sm-4">
+                <div class="card mt-2">
 
-                <div class="card-body">
-                    <h4 class="card-title">@role.Name</h4>
-                    <p class="card-text">Role ID: @role.Id</p>
+                    <div class="card-body">
+                        <h4 class="card-title">@role.Name</h4>
+                        <p class="card-text">Role ID: @role.Id</p>
+
+                    </div>
+
+                    <div class="card-footer">
+
+                        <form asp-controller="admin" asp-action="deleterole" asp-route-id="@role.Id" method="post">
+
+                            <a asp-controller="admin" asp-action="editrole"
+                               asp-route-id="@role.Id" class="btn btn-primary m-1">Edit</a>
+
+                            <span id="confirmdeletespan_@role.Id" style="display: none;" onclick="confirmDelete('@role.Id', false)">
+                                <span>Are you sure to delete the user?</span>
+                                <button type="submit" class="btn-sm btn-warning"> Yes </button>
+                                <a href="#" class="btn-sm btn-primary">No</a>
+                            </span>
+
+                            <span id="deletespan_@role.Id">
+                                <a href="#" class="btn-sm btn-warning" onclick="confirmDelete('@role.Id', true)">Delete</a>
+                            </span>
+                        </form>
+
+                    </div>
 
                 </div>
-
-                <div class="card-footer">
-                    <a asp-controller="admin" asp-action="editrole"
-                        asp-route-id="@role.Id" class="btn btn-primary m-1">Edit</a>
-                    <a asp-controller="admin" asp-action="deleterole"
-                        asp-route-id="@role.Id" class="btn btn-primary m-1">Delete</a>
-                </div>
-
             </div>
-        </div>
 
-    }
-</div>
+        }
+    </div>
 }
 else
 {
@@ -50,4 +63,7 @@ else
     </div>
 }
 
+@section Scripts {
+    <script src="~/js/script.js"></script>
+}
 
