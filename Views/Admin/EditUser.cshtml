@@ -1,0 +1,86 @@
+﻿@model EditUserViewModel
+@{
+    ViewBag.Title = "Edit user";
+}
+
+<div class="col-sm-7 mt-3">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <form asp-controller="admin" asp-action="edituser" method="post">
+
+        <div class="form-group">
+            <label asp-for="Id">Id:</label>
+            <input asp-for="Id" class="form-control disabled">
+            <span asp-validation-for="Id" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="UserName">Username:</label>
+            <input asp-for="UserName" class="form-control disabled">
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email">Email:</label>
+            <input asp-for="Email" class="form-control" placeholder="Enter email">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a asp-action="listusers" class="btn btn-primary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<div class="col-sm-8">
+    <div class="card">
+        <div class="card-header"> User roles </div>
+
+        <div class="card-body">
+            @if (Model.Roles.Any())
+            {
+                <ul>
+                    @foreach (var role in Model.Roles)
+                    {
+                        <li>@role</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No roles assigned</p>
+            }
+        </div>
+
+        <div class="card-footer">
+            <a asp-action="#" asp-route-id="@Model.Id" class="btn-sm btn-primary">Edit role</a>
+        </div>
+    </div>
+
+    <div class="card mt-2">
+        <div class="card-header"> User claims </div>
+
+        <div class="card-body">
+            @if (Model.Claims.Any())
+            {
+                <ul>
+                    @foreach (var claim in Model.Claims)
+                    {
+                        <li>@claim</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No claims assigned</p>
+            }
+        </div>
+
+        <div class="card-footer">
+            <a asp-action="#" asp-route-id="@Model.Id" class="btn-sm btn-primary">Edit claims</a>
+        </div>
+    </div>
+
+</div>
+    
