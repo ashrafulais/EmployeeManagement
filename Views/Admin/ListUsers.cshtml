@@ -9,42 +9,47 @@
 @if (Model.Any())
 {
 
-<a asp-controller="account" asp-action="register" class="btn btn-primary m-1">Add User</a>
-<div class="row">
+    <a asp-controller="account" asp-action="register" class="btn btn-primary m-1">Add User</a>
+    <div class="row">
 
-    @foreach (var user in Model)
-    {
+        @foreach (var user in Model)
+        {
 
-        <div class="col-sm-6">
-            <div class="card mt-2">
+            <div class="col-sm-6">
+                <div class="card mt-2">
 
-                <div class="card-header">
-                    User ID: @user.Id
+                    <div class="card-header">
+                        User ID: @user.Id
+                    </div>
+
+                    <div class="card-body">
+                        <h4 class="card-title">@user.UserName</h4>
+                        <p class="card-text">Email: @user.Email</p>
+                    </div>
+
+                    <div class="card-footer">
+                        <form asp-controller="admin" asp-action="deleteuser" asp-route-id="@user.Id" method="post">
+
+                            <a asp-controller="admin" asp-action="edituser"
+                               asp-route-id="@user.Id" class="btn-sm btn-primary m-1">Edit</a>
+
+                            <span id="confirmdeletespan_@user.Id" style="display: none;" onclick="confirmDelete('@user.Id', false)">
+                                <span>Are you sure to delete the user?</span>
+                                <button type="submit" class="btn-sm btn-warning"> Yes </button>
+                                <a href="#" class="btn-sm btn-primary">No</a>
+                            </span>
+
+                            <span id="deletespan_@user.Id">
+                                <a href="#" class="btn-sm btn-warning" onclick="confirmDelete('@user.Id', true)" >Delete</a>
+                            </span>
+                        </form>
+                    </div>
+
                 </div>
-
-                <div class="card-body">
-                    <h4 class="card-title">@user.UserName</h4>
-                    <p class="card-text">Email: @user.Email</p>
-                </div>
-
-                <div class="card-footer">
-                    <form asp-controller="admin" asp-action="deleteuser" asp-route-id="@user.Id" method="post">
-
-                        <a asp-controller="admin" asp-action="edituser"
-                           asp-route-id="@user.Id" class="btn-sm btn-primary m-1">Edit</a>
-                        
-                        <button type="submit" class="p-0 btn-sm btn-warning">
-                        Delete
-                        </button>
-
-                    </form>
-                </div>
-
             </div>
-        </div>
 
-    }
-</div>
+        }
+    </div>
 }
 else
 {
@@ -59,4 +64,6 @@ else
     </div>
 }
 
-
+@section Scripts {
+    <script src="~/js/script.js"></script>
+}
