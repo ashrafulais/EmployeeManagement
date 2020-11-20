@@ -23,6 +23,15 @@ namespace EmployeeManagement.Models
             //map keys to the .net core identity
             //because we are overriding the method, we need to specify it in the base method
             base.OnModelCreating(modelBuilder);
+            
+            //use this code to enforce not to delete a record that contains foreign key connection (User , Roles , UserRoles : tables)
+
+            foreach(var foreignKey in modelBuilder.Model.GetEntityTypes()
+                                        .SelectMany(e => e.GetForeignKeys() ))
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
             modelBuilder.LoadSeedData();
         }
 

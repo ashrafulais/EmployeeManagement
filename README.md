@@ -841,4 +841,13 @@ User mapping with the roles
 [Authorize(Roles = "Manager")]
 ```
 
+### Enforce ON DELETE NO ACTION in entity framework core
 
+1. AspNetUsers 
+2. AspNetRoles
+3. Users & Role mapping data table, both are foreign keys : AspNetUserRoles
+
+By default, deleting a role record, user relation gets removed from AspNetUserRoles.
+that is, ON DELETE CASCADE (delets the child rows). 
+We don't want a role to be deleted if there are users asigned. 
+Set OnDelete:Restrict
