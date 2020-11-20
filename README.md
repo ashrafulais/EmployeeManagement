@@ -851,3 +851,8 @@ By default, deleting a role record, user relation gets removed from AspNetUserRo
 that is, ON DELETE CASCADE (delets the child rows). 
 We don't want a role to be deleted if there are users asigned. 
 Set OnDelete:Restrict
+
+### Custom error page
+
+
+

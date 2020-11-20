@@ -4,14 +4,25 @@
     ViewBag.Title = "Error";
 }
 
+@if (ViewBag.ErrorTitle is null)
+{
     <div class="alert alert-info">
         <h4> An error occurred while processing you request </h4>
 
         @*
-        <p> ExceptionPath: @ViewBag.ExceptionPath </p>
-        <p> ExceptionMessage: @ViewBag.ExceptionMessage </p>
+            <p> ExceptionPath: @ViewBag.ExceptionPath </p>
+            <p> ExceptionMessage: @ViewBag.ExceptionMessage </p>
         *@
     </div>
+}
+else
+{
+<div class="alert alert-danger">
+    <h4> @ViewBag.ErrorTitle </h4>
+    <p> @ViewBag.ErrorMessage </p>
+</div>
+}
 
-<a asp-controller="home" asp-action="index" class="btn btn-info">Home</a>
+
+        <a asp-controller="home" asp-action="index" class="btn btn-info">Home</a>
 
